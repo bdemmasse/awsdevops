@@ -1,0 +1,24 @@
+AWSTemplateFormatVersion: '2010-09-09'
+
+Resources:
+  EC2demo:
+   Type: AWS::EC2::Instance
+   Properties:
+    ImageId: ami-0ff8a91507f77f867
+    InstanceType: t2.micro 
+    KeyName: KP
+    Tags:
+        -
+          Key: Application
+          Value: ngnix
+        -
+          Key: Name
+          Value: MyTag          
+    UserData:
+     Fn::Base64: !Sub | 
+            #!/bin/bash -ex
+            # Install the AWS CodeDeploy Agent.
+            cd /home/ec2-user/
+            wget https://aws-codedeploy-${AWS::Region}.s3.amazonaws.com/latest/codedeploy-agent.noarch.rpm
+            yum -y install codedeploy-agent.noarch.rpm
+            
