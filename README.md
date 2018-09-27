@@ -1,6 +1,6 @@
 # Welcome to my sample for hosting static website with AWS DevOps tools 
 This sample code helps get you started with a simple static HTML website
-deployed by AWS CodeDeploy and AWS CloudFormation to an Amazon EC2 instance.
+deployed by using AWS CodeCommit, AWS CodeBuild, AWS CodePipeline, AWS CloudFormation AWS CodeDeploy to an Amazon EC2 instance.
 
 What's Here
 -----------
