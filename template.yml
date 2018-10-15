@@ -53,6 +53,7 @@ Resources:
             # Install the AWS CodeDeploy Agent.
             cd /home/ec2-user/
             wget https://aws-codedeploy-${AWS::Region}.s3.amazonaws.com/latest/codedeploy-agent.noarch.rpm
+            sleep 5
             yum -y install codedeploy-agent.noarch.rpm
       IamInstanceProfile: !Ref WebServerInstanceProfile
   WebServerSecurityGroup:
