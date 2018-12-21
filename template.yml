@@ -1,0 +1,74 @@
+AWSTemplateFormatVersion: 2010-09-09
+Description: >-
+  AWS CloudFormation sample template creates a single EC2 instance and a Seurity
+  Group
+Resources:
+  WebServerRole:
+    Type: 'AWS::IAM::Role'
+    Properties:
+      AssumeRolePolicyDocument:
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service:
+                - ec2.amazonaws.com
+            Action:
+              - 'sts:AssumeRole'
+      Path: /
+  WebServerRolePolicies:
+    Type: 'AWS::IAM::Policy'
+    Properties:
+      PolicyName: S3AllowPolicy
+      PolicyDocument:
+        Statement:
+          - Effect: Allow
+            Action: 's3:*'
+            Resource: '*'
+      Roles:
+        - !Ref WebServerRole
+  WebServerInstanceProfile:
+    Type: 'AWS::IAM::InstanceProfile'
+    Properties:
+      Path: /
+      Roles:
+        - !Ref WebServerRole
+  WebServerInstance:
+    Type: 'AWS::EC2::Instance'
+    Properties:
+      ImageId: ami-0080e4c5bc078760e
+      InstanceType: t2.micro
+      SecurityGroups:
+        - !Ref WebServerSecurityGroup
+      KeyName: KP
+      Tags:
+        -
+          Key: Application
+          Value: ngnix
+        -
+          Key: Name
+          Value: MyTag          
+      UserData:
+        Fn::Base64: !Sub | 
+            #!/bin/bash -ex
+            # Install the AWS CodeDeploy Agent.
+            yum -y update
+            yum install -y ruby
+            yum install -y aws-cli
+            cd /home/ec2-user/
+            aws s3 cp s3://aws-codedeploy-us-east-1/latest/install . --region us-east-1
+            chmod +x ./install
+            ./install auto
+      IamInstanceProfile: !Ref WebServerInstanceProfile
+  WebServerSecurityGroup:
+    Type: 'AWS::EC2::SecurityGroup'
+    Properties:
+      GroupDescription: Enable HTTP and SSH access
+      SecurityGroupIngress:
+        - IpProtocol: tcp
+          FromPort: '80'
+          ToPort: '80'
+          CidrIp: 0.0.0.0/0
+        - IpProtocol: tcp
+          FromPort: '22'
+          ToPort: '22'
+          CidrIp: 0.0.0.0/0
