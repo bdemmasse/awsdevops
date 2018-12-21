@@ -15,5 +15,4 @@ This sample includes:
   installing and deploying your website on the Amazon EC2 instance
 * webpage/ - this directory contains static web assets used by your website
   * index.html - this file contains the sample website
-* template.yml - this file contains the description of AWS resources used by AWS
-  CloudFormation to deploy your infrastructure
+
