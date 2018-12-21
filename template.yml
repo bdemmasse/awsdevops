@@ -22,7 +22,7 @@ Resources:
       PolicyDocument:
         Statement:
           - Effect: Allow
-            Action: 's3:FullAccess'
+            Action: 's3:*'
             Resource: '*'
       Roles:
         - !Ref WebServerRole
